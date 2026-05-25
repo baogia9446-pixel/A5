@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỉ Niệm Cấp 3 - Nguyễn Gia Bảo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4757;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ffdee9 0%, #b5fffc 100%);
+            height: 100vh; overflow: hidden;
+            position: relative;
+        }
+
+        /* --- BACKGROUND ANIMATION --- */
+        .falling-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+        .falling-item {
+            position: absolute; top: -50px;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* --- TRÁI TIM BAN ĐẦU --- */
+        #heartContainer {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100; cursor: pointer; transition: all 1s ease;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .heart {
+            background-color: var(--primary-color);
+            height: 130px; width: 130px; position: relative;
+            transform: rotate(-45deg); animation: beat .8s infinite alternate;
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
+        }
+        .heart:before, .heart:after {
+            content: ""; background-color: var(--primary-color);
+            border-radius: 50%; height: 130px; width: 130px; position: absolute;
+        }
+        .heart:before { top: -65px; left: 0; }
+        .heart:after { left: 65px; top: 0; }
+        @keyframes beat { 0% { transform: scale(1) rotate(-45deg); } 100% { transform: scale(1.1) rotate(-45deg); } }
+
+        .btn-nhan {
+            position: absolute; background: white; border: 2px solid var(--primary-color);
+            padding: 6px 18px; border-radius: 50px;
+            font-weight: bold; color: var(--primary-color); z-index: 102;
+            font-size: 1rem; pointer-events: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- GIAO DIỆN CHỌN TÊN --- */
+        #guideText {
+            position: fixed; top: 20px; left: 25px;
+            font-size: 1.3rem; font-weight: 900; color: var(--primary-color);
+            opacity: 0; transition: 0.5s; z-index: 90;
+            text-shadow: 1px 1px 0px white;
+        }
+        #guideText.show { opacity: 1; }
+
+        #namesGrid {
+            position: absolute; top: 80px; left: 2%; width: 96%;
+            height: calc(100vh - 120px);
+            display: grid; grid-template-columns: repeat(9, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            opacity: 0; pointer-events: none; transition: 1s; z-index: 50;
+        }
+        #namesGrid.show { 
+            opacity: 1 !important; 
+            pointer-events: auto !important; 
+        }
+
+        .cell { display: flex; justify-content: center; align-items: center; position: relative; }
+
+        .name-box {
+            display: flex; justify-content: center; align-items: center;
+            text-align: center; font-weight: bold; font-size: 0.85rem;
+            color: white; cursor: pointer; transition: 0.3s; padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            z-index: 60;
+        }
+        .name-box:hover { transform: scale(1.25) !important; z-index: 99; box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+
+        .s-tron { border-radius: 50%; width: 78px; height: 78px; }
+        .s-vuong { border-radius: 12px; width: 78px; height: 78px; }
+        .s-elip { border-radius: 50% / 30%; width: 92px; height: 62px; }
+        .s-lucgiac { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); width: 88px; height: 72px; }
+        .s-gai { clip-path: polygon(50% 0%, 65% 20%, 85% 15%, 80% 35%, 100% 50%, 80% 65%, 85% 85%, 65% 80%, 50% 100%, 35% 80%, 15% 85%, 20% 65%, 0% 50%, 20% 35%, 15% 15%, 35% 20%); width: 88px; height: 88px; }
+
+        /* --- MÀN HÌNH LỜI CHÚC (ĐÃ FIX ĐƯA VÀO GIỮA MÀN HÌNH) --- */
+        #wishPage {
+            display: none; width: 100%; height: 100%;
+            padding: 40px; position: relative; z-index: 10;
+            justify-content: center; align-items: center; /* Căn giữa hoàn toàn */
+            background: rgba(255, 253, 244, 0.4); /* Làm nền mờ sương lãng mạn */
+        }
+        
+        #noteBox {
+            width: 55%; height: 80%; background: #ffffff;
+            padding: 45px; border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border-left: 10px solid #ff7675;
+            overflow-y: auto; display: flex; flex-direction: column;
+            animation: popUp 0.5s ease forwards;
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Chữ viết tay kỉ niệm */
+        #handwriting {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.7rem; line-height: 1.8; color: #2d3436;
+            white-space: pre-wrap; word-wrap: break-word;
+        }
+
+        .gift-tag { font-family: 'Quicksand', sans-serif; color: #ff7675; font-weight: bold; font-size: 1.5rem; margin-bottom: 15px; display: block; }
+        .signature { font-family: 'Quicksand', sans-serif; color: #ff4757; font-weight: 900; font-size: 1.4rem; margin-top: auto; text-align: right; display: block; padding-top: 25px; letter-spacing: 1px; }
+
+        /* Hiệu ứng trôi nút tên */
+        .selected-name-float {
+            position: fixed; font-size: 1.4rem; font-weight: bold;
+            color: white; z-index: 150; display: flex; justify-content: center; align-items: center;
+            transition: all 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="falling-container" id="fallZone"></div>
+
+    <div id="heartContainer" onclick="startWeb()">
+        <div class="heart"></div>
+        <div class="btn-nhan">Nhấn</div>
+    </div>
+
+    <div id="guideText">HÃY CHỌN TÊN CỦA BẠN 👈</div>
+    <div id="namesGrid"></div>
+
+    <div id="wishPage">
+        <div id="noteBox">
+            <span class="gift-tag">Gửi tặng,</span>
+            <div id="handwriting"></div>
+            <span class="signature">NGUYỄN GIA BẢO</span>
+        </div>
+    </div>
+
+    <script>
+        const names = [
+            "Lê Na", "Mai Hương", "Yến Vi", "Đào Anh", "Hoài Bảo", "Thu Bình", "Cường", "Duy", "Minh Hoàng", "Hưng", "Lan Hương", "Khánh", "Đăng Khoa", "Trương Khoa", "Linh", "Nhi", "Tấn Phát", "Tài", "Thanh", "Trân", "Anh Tuấn", "Thành Tuấn", "Thảo Vy", "Kiều Ánh", "Diệp Chi", "Cẩm Tú", "Duyên", "Đặng Hoàng", "Mai Hoàng", "Huyền", "Khải",
+            "Phương Anh", "Võ Anh", "Hoài", "Hải Yến", "Dũng", "Đạt", "Ngọc", "Nhật", "Nhật Phát", "Tuấn Kiệt", "Hoàng Long", "Nhật Minh", "Anh Thư"
+        ];
+
+        const colors = ["#ff6b6b", "#48dbfb", "#1dd1a1", "#feca57", "#ff9ff3", "#54a0ff", "#5f27cd", "#2ed573", "#ffa502", "#ff4757"];
+        const shapes = ["s-tron", "s-vuong", "s-elip", "s-lucgiac", "s-gai"];
+
+        const wishes = {
+            group1: "Cám ơn vì đã trở thành một phần thanh xuân, đã in dấu chân vào kí ức, vào tuổi học trò của tao, thật sự thì tao rất vui vì đã được nói chuyện, được vui chơi với mày, khoảng thời gian ấy tuy dài nhưng ngắn, dài vì trải qua 9 tháng ròng rã 12, ngắn vì không đủ để tao với mày được trò chuyện nhiều hơn, được vui hơn nữa. Những thôi thì thời gian cũng gần hết, ai rồi cũng sẽ có con đường riêng của bản thân. Chúc mày thành công tốt đẹp với con đường mày đã chọn, chúc mày sẽ có cuộc sống như ước muốn. Có lẽ sau này sẽ hiếm lần chúng ta gặp lại, nhưng chí ít tao với mày vẫn sẽ có một kí ức nào đó dành cho đối phương. Xin cám ơn mày vì tất cả.",
+            group2: "Biết nói sao nhỉ, thời gian tuổi học trò của tao với mày cũng gần hết rồi, rồi ai cũng sẽ có lối đi, có con đường riêng cho bản thân. Có lẽ đối với tao, năm 12 không phải năm đẹp nhất, nhưng đó là năm đáng nhớ nhất của tao, vì khi đó tao đã được chứng minh cho mày và những đứa khác biết rằng tao có khả năng chăm lo cho gia đình. Mày nhớ không, hôm cổng trại ấy, mày đã tin tưởng tao vì để tao vào bếp nấu ăn trưa. Đối với tao đó là chuyện nhỏ, nhưng chuyện lớn chính là nấu để tụi mày cảm thấy ngon, và không cảm thấy tao đang cố ra vẻ vì không biết nấu vẫn tự cho là bản thân nấu được. Cám ơn vì đã cho tao chứng mình điều đấy. Chắc chắn rằng hôm đó tao sẽ không bao giờ quên được. Nhưng thôi thì, cũng sắp đến lúc rồi ha, chúc mày đạt được Nguyện vọng 1, sẽ thành công trên con đường mày đã chọn nhé. Chúc mày sẽ có cuộc sống ấm êm như mày mơ ước. Cuối cùng, cảm ơn vì tất cả nhé.",
+            dung: "Haizz, nói sao nhỉ, đúng là trong năm vừa qua, mày đã làm tao khá là hụt hẫng rất nhiều, nhưng thôi, cũng gần hết thời gian rồi, làm gì còn thời gian nữa chứ, trách móc cũng đã xong. Cám ơn mày vì đã là một phần của tuổi học trò của tao, chơi với mày vui lắm á Dũng, tao thích cái cách mày luôn tỏ ra lạc quan, vui vẻ với tất cả mọi thứ chung quanh, điều đó khiến tao rất ngưỡng mộ và mong muốn được như mày. Con người tao quá khô khan để có thể lạc quan được như thế. Cám ơn mày vì đã cho tao biết được niềm vui tuổi học trò nó như thế nào. Sau này, tao với mày có khi rất khó để gặp nhau, chúc mày sẽ thành công, đạt được mục tiêu trong cuộc sống tương lai, chúc mày luôn vui vẻ như mày của hiện tại. Cuối cùng thì, cám ơn và xin lỗi vì đã đối xử không tốt với mày.",
+            dat: "Hello Đạt nha, có thể khi mày đã vào được đây để đọc thì chắc mày đang thắc mắc tao đã làm bằng cách nào đúng không. Tao đã dùng trợ giúp của AI, bởi tao biết được thực lực của mình. À mà không có ý gì đâu, chỉ là mày là người tao cũng khá ngưỡng mộ đấy. Tao bên cơ khí và kiến trúc, và mày biết mà, con người dễ bị tò mò và ngưỡng mộ những gì họ không biết và chưa làm được, nên là từ khi biết mày, tao mới biết cái khái niệm Công nghệ của tao còn hạn hẹp lắm. Mày là người có tài, từ nghệ thuật hay công nghệ điện điện tử, hãy cố gắng trên con đường mày chọn nhé. Đôi lúc từ ngưỡng mộ, tao dần chuyển qua xu hướng ghen tị với mày á, Bởi khi có vấn đề sự cố, người được gọi lên hỗ trợ sẽ là mày. Những thôi, ghen tị làm gì nữa, sau này chắc gì đã gặp đúng không? Chúc cho mày luôn đạt được mục tiêu, luôn thành công trên đường tương lai nhé. Cám ơn mày vì đã trở thành một phần của kí ức của tao nhé.",
+            ngoc: "Halo halo, ờm không biết nói gì hơn ngoài Cám ơn. Cám ơn vì đã trở thành một phần thanh xuân, đã in dấu chân vào kí ức, vào tuổi học trò của tao, thật sự thì tao rất vui vì đã được nói chuyện, được vui chơi với mày, khoảng thời gian ấy tuy dài nhưng ngắn, dài vì trải qua 9 tháng ròng rã 12, ngắn vì không đủ để tao với mày được trò chuyện nhiều hơn, được vui hơn nữa. Tao khá ấn tượng với mày vì dù mày chơi với nam khá nhiều, nhưng mày vẫn có cái điểm đặc biệt, đó là mày biết lắng nghe á, cám ơn mày vì đã bên cạnh tao những lúc tao buồn, tao cần tâm sự, có lẽ trong lớp hiện tại, mày là đứa tao tâm sự nhiều nhất luôn á. Sau này có lẽ khó gặp, nên là t ghi sẵn những lời chúc ra đây nhé, Chúc mừng năm mới, Chúc mừng sinh nhật, Giáng sinh an lành, nghỉ lễ vui vẻ,... Sau này khó gặp, nên những lời chúc này sẽ thay tao gửi lời chúc tới mày nhé. Cám ơn mày vì tất cả.",
+            group6: "Ờm không biết nói gì hơn ngoài Cám ơn. Cám ơn vì đã trở thành một phần thanh xuân, đã in dấu chân vào kí ức, vào tuổi học trò của tao, thật sự thì tao rất vui vì đã được nói chuyện, được vui chơi với mày, khoảng thời gian ấy tuy dài nhưng ngắn, dài vì trải qua 9 tháng ròng rã 12, ngắn vì không đủ để tao với mày được trò chuyện nhiều hơn, được vui hơn nữa. Sau này có lẽ khó gặp, nên là t ghi sẵn những lời chúc ra đây nhé, Chúc mừng năm mới, Chúc mừng sinh nhật, Giáng sinh an lành, nghỉ lễ vui vẻ,... Sau này khó gặp, nên những lời chúc này sẽ thay tao gửi lời chúc tới mày nhé. Cám ơn mày vì tất cả.",
+            thu: "Hellu Anh Thư nha, nói sao ta, cám ơn mày vì đã trở thành 1 phần của tuổi học trò, tuổi trẻ của tao nhe, dù trước đây tao với mày có hiểu lầm nhau, có sự “khó nói” nên khó tiếp xúc, khó trò chuyện với nhau, nhưng dù sao thì cũng chung lớp, cũng phần nào tao biết được mày như thế nào í. Cũng may là trước khi cánh cổng trường đóng lại, tuổi học trò của tụi mình sắp dừng lại thì tao với mày cũng đã giải quyết xong chuyện ngày xưa và có thể nói là đã nói chuyện với nhau được rồi, tao vui lắm, tao vui vì cuối cùng tao đã có thể trò chuyện với mày, cho dù đó chỉ là vài câu nhắn qua lại thôi à. Thôi thì vậy cũng đủ, chắc tao sẽ bứt rứt lắm nếu tao với mày vẫn cứ im lặng với nhau, coi nhau như tàng hình trong 2 năm học chung. Chúc mày sẽ luôn thành công, đạt được mong ước trên đường đời mày đã chọn đi. Chúc cho mày luôn có được thành công sau này. Rồi thì tao với mày muốn gặp cũng khó lắm, biết sao giờ, đời mà, đâu ai ở cạnh ai mãi đâu nhỉ, tao sẽ luôn nhớ tới những lúc tao với mày làm cổng trại, có lẽ đó chính là khoảng thời gian vui nhất luôn á. Sau này nếu tao với mày đủ duyên, ắt sẽ gặp lại nhau, cho dù chỉ là lướt qua, miễn đủ để tao vẫn nhớ đến mày, vẫn nhớ đến một phần kí ức thời cấp 3 ấy. Cám ơn vì tất cả."
+        };
+
+        const g1 = ["Lê Na", "Mai Hương", "Yến Vi", "Đào Anh", "Hoài Bảo", "Thu Bình", "Cường", "Duy", "Minh Hoàng", "Hưng", "Lan Hương", "Khánh", "Đăng Khoa", "Trương Khoa", "Linh", "Nhi", "Tấn Phát", "Tài", "Thanh", "Trân", "Anh Tuấn", "Thành Tuấn", "Thảo Vy", "Kiều Ánh", "Diệp Chi", "Cẩm Tú", "Duyên", "Đặng Hoàng", "Mai Hoàng", "Huyền", "Khải"];
+        const g2 = ["Phương Anh", "Võ Anh", "Hoài", "Hải Yến"];
+        const g6 = ["Nhật", "Nhật Phát", "Tuấn Kiệt", "Hoàng Long", "Nhật Minh"];
+
+        // Hoa rơi nền lãng mạn
+        function createFall() {
+            const types = ['🌸', '🍂', '⭐', '🍀', '✨'];
+            const item = document.createElement('div');
+            item.className = 'falling-item';
+            item.innerText = types[Math.floor(Math.random() * types.length)];
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.fontSize = Math.random() * 18 + 12 + 'px';
+            const duration = Math.random() * 4 + 6; 
+            item.style.animationDuration = duration + 's';
+            document.getElementById('fallZone').appendChild(item);
+            setTimeout(() => item.remove(), duration * 1000);
+        }
+        setInterval(createFall, 250);
+
+        function startWeb() {
+            const heart = document.getElementById('heartContainer');
+            heart.style.top = '15px';
+            heart.style.transform = 'translate(-50%, 0) scale(0.3)';
+            heart.onclick = null; 
+            
+            document.querySelector('.btn-nhan').style.display = 'none';
+            document.getElementById('guideText').classList.add('show');
+            
+            const grid = document.getElementById('namesGrid');
+            grid.classList.add('show'); 
+            grid.innerHTML = ''; 
+
+            const shuffled = [...names].sort(() => Math.random() - 0.5);
+
+            shuffled.forEach(name => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                
+                const box = document.createElement('div');
+                const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                box.className = `name-box ${randomShape}`;
+                box.style.backgroundColor = randomColor;
+                box.innerText = name;
+                
+                const moveX = Math.floor(Math.random() * 20) - 10;
+                const moveY = Math.floor(Math.random() * 20) - 10;
+                const rotate = Math.floor(Math.random() * 20) - 10;
+                box.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${rotate}deg)`;
+                
+                box.onclick = (e) => selectName(name, e, randomColor, randomShape);
+                
+                cell.appendChild(box);
+                grid.appendChild(cell);
+            });
+        }
+
+        function selectName(name, e, bgColor, shapeClass) {
+            document.getElementById('namesGrid').classList.remove('show');
+            document.getElementById('namesGrid').style.opacity = '0';
+            document.getElementById('namesGrid').style.pointerEvents = 'none';
+            document.getElementById('guideText').classList.remove('show');
+            document.getElementById('guideText').style.opacity = '0';
+            document.getElementById('heartContainer').style.opacity = '0';
+
+            const floatName = document.createElement('div');
+            floatName.className = `selected-name-float ${shapeClass}`;
+            floatName.style.backgroundColor = bgColor;
+            floatName.innerText = name;
+            floatName.style.left = (e.clientX - 40) + 'px';
+            floatName.style.top = (e.clientY - 40) + 'px';
+            document.body.appendChild(floatName);
+
+            setTimeout(() => {
+                floatName.style.left = '50%';
+                floatName.style.top = '15px';
+                floatName.style.transform = 'translateX(-50%) scale(0.9)';
+            }, 100);
+
+            setTimeout(() => {
+                document.getElementById('wishPage').style.display = 'flex';
+                startWriting(name);
+            }, 1900);
+        }
+
+        function startWriting(name) {
+            let content = "";
+            if (g1.includes(name)) content = wishes.group1;
+            else if (g2.includes(name)) content = wishes.group2;
+            else if (name === "Dũng") content = wishes.dung;
+            else if (name === "Đạt") content = wishes.dat;
+            else if (name === "Ngọc") content = wishes.ngoc;
+            else if (g6.includes(name)) content = wishes.group6;
+            else if (name === "Anh Thư") content = wishes.thu;
+
+            const element = document.getElementById('handwriting');
+            element.innerHTML = '';
+            
+            let i = 0;
+            const totalTime = 7000; 
+            const speed = totalTime / content.length;
+
+            function type() {
+                if (i < content.length) {
+                    element.innerHTML += content.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
