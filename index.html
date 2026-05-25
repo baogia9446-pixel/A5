@@ -63,57 +63,64 @@
 
         /* --- GIAO DIỆN CHỌN TÊN --- */
         #guideText {
-            position: fixed; top: 20px; left: 25px;
-            font-size: 1.3rem; font-weight: 900; color: var(--primary-color);
+            position: fixed; top: 20px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem; font-weight: 900; color: var(--primary-color);
             opacity: 0; transition: 0.5s; z-index: 90;
             text-shadow: 1px 1px 0px white;
+            white-space: nowrap;
+            text-align: center;
         }
         #guideText.show { opacity: 1; }
 
         #namesGrid {
-            position: absolute; top: 80px; left: 2%; width: 96%;
-            height: calc(100vh - 120px);
+            position: absolute; top: 70px; left: 5%; width: 90%;
+            height: calc(100vh - 90px);
             display: grid; 
-            grid-template-columns: repeat(10, 1fr);
-            grid-template-rows: repeat(5, 1fr);
+            grid-template-columns: repeat(8, 1fr); /* Mặc định máy tính 8 cột */
+            gap: 10px;
+            padding-bottom: 20px;
             opacity: 0; pointer-events: none; transition: 1s; z-index: 50;
+            overflow-y: auto; /* Cho phép cuộn nếu quá nhiều tên trên màn hình nhỏ */
         }
         #namesGrid.show { 
             opacity: 1 !important; 
             pointer-events: auto !important; 
         }
 
-        .cell { display: flex; justify-content: center; align-items: center; position: relative; }
+        .cell { display: flex; justify-content: center; align-items: center; position: relative; padding: 5px; }
 
         .name-box {
             display: flex; justify-content: center; align-items: center;
-            text-align: center; font-weight: bold; font-size: 0.85rem;
-            color: white; cursor: pointer; transition: 0.3s; padding: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            text-align: center; font-weight: bold; font-size: 0.8rem;
+            color: white; cursor: pointer; transition: 0.3s; padding: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             z-index: 60;
+            word-break: break-word;
         }
-        .name-box:hover { transform: scale(1.25) !important; z-index: 99; box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+        .name-box:hover { transform: scale(1.15) !important; z-index: 99; box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
 
-        .s-tron { border-radius: 50%; width: 78px; height: 78px; }
-        .s-vuong { border-radius: 12px; width: 78px; height: 78px; }
-        .s-elip { border-radius: 50% / 30%; width: 92px; height: 62px; }
-        .s-lucgiac { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); width: 88px; height: 72px; }
-        .s-gai { clip-path: polygon(50% 0%, 65% 20%, 85% 15%, 80% 35%, 100% 50%, 80% 65%, 85% 85%, 65% 80%, 50% 100%, 35% 80%, 15% 85%, 20% 65%, 0% 50%, 20% 35%, 15% 15%, 35% 20%); width: 88px; height: 88px; }
+        /* Kích thước khối thích ứng */
+        .s-tron { border-radius: 50%; width: 70px; height: 70px; }
+        .s-vuong { border-radius: 12px; width: 70px; height: 70px; }
+        .s-elip { border-radius: 50% / 30%; width: 85px; height: 58px; }
+        .s-lucgiac { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); width: 80px; height: 65px; }
+        .s-gai { clip-path: polygon(50% 0%, 65% 20%, 85% 15%, 80% 35%, 100% 50%, 80% 65%, 85% 85%, 65% 80%, 50% 100%, 35% 80%, 15% 85%, 20% 65%, 0% 50%, 20% 35%, 15% 15%, 35% 20%); width: 80px; height: 80px; }
 
-        /* --- MÀN HÌNH LỜI CHÚC --- */
+        /* --- MÀN HÌNH LỜI CHÚC RESPONSIVE --- */
         #wishPage {
             display: none; width: 100%; height: 100%;
-            padding: 40px; position: relative; z-index: 10;
+            padding: 20px; position: relative; z-index: 10;
             justify-content: center; align-items: center;
             background: rgba(255, 253, 244, 0.4);
         }
         
         #noteBox {
-            width: 55%; height: 80%; background: #ffffff;
-            padding: 45px; border-radius: 16px;
+            width: 90%; max-width: 600px; height: 80%; background: #ffffff;
+            padding: 30px; border-radius: 16px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-            border-left: 10px solid #ff7675;
+            border-left: 8px solid #ff7675;
             overflow-y: auto; display: flex; flex-direction: column;
             animation: popUp 0.5s ease forwards;
         }
@@ -125,18 +132,40 @@
 
         #handwriting {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.7rem; line-height: 1.8; color: #2d3436;
+            font-size: 1.4rem; line-height: 1.6; color: #2d3436;
             white-space: pre-wrap; word-wrap: break-word;
         }
 
-        .gift-tag { font-family: 'Quicksand', sans-serif; color: #ff7675; font-weight: bold; font-size: 1.5rem; margin-bottom: 15px; display: block; }
-        .signature { font-family: 'Quicksand', sans-serif; color: #ff4757; font-weight: 900; font-size: 1.4rem; margin-top: auto; text-align: right; display: block; padding-top: 25px; letter-spacing: 1px; }
+        .gift-tag { font-family: 'Quicksand', sans-serif; color: #ff7675; font-weight: bold; font-size: 1.3rem; margin-bottom: 15px; display: block; }
+        .signature { font-family: 'Quicksand', sans-serif; color: #ff4757; font-weight: 900; font-size: 1.2rem; margin-top: auto; text-align: right; display: block; padding-top: 25px; letter-spacing: 1px; }
 
         .selected-name-float {
-            position: fixed; font-size: 1.4rem; font-weight: bold;
+            position: fixed; font-size: 1.2rem; font-weight: bold;
             color: white; z-index: 150; display: flex; justify-content: center; align-items: center;
             transition: all 1.8s cubic-bezier(0.25, 1, 0.5, 1);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* --- MEDIA QUERIES: ĐÁP ỨNG CHO ĐIỆN THOẠI VÀ TABLET --- */
+        @media (max-width: 900px) {
+            #namesGrid { grid-template-columns: repeat(5, 1fr); } /* Màn hình vừa: 5 cột */
+        }
+
+        @media (max-width: 600px) {
+            #namesGrid { grid-template-columns: repeat(3, 1fr); top: 60px; height: calc(100vh - 80px); } /* Điện thoại: 3 cột */
+            .name-box { font-size: 0.75rem; padding: 5px; }
+            .s-tron, .s-vuong { width: 62px; height: 62px; }
+            .s-elip { width: 75px; height: 50px; }
+            .s-lucgiac { width: 70px; height: 58px; }
+            .s-gai { width: 70px; height: 70px; }
+            
+            #noteBox { width: 95%; height: 85%; padding: 20px; border-left-width: 6px; }
+            #handwriting { font-size: 1.25rem; line-height: 1.5; }
+            #guideText { font-size: 1rem; }
+            .heart { height: 100px; width: 100px; }
+            .heart:before, .heart:after { height: 100px; width: 100px; }
+            .heart:before { top: -50px; }
+            .heart:after { left: 50px; }
         }
     </style>
 </head>
@@ -161,7 +190,6 @@
     </div>
 
     <script>
-        // Đã sửa thành Quỳnh Hoa chính chủ
         const names = [
             "Lê Na", "Mai Hương", "Yến Vi", "Đào Anh", "Hoài Bảo", "Thu Bình", "Cường", "Duy", "Minh Hoàng", "Hưng", "Lan Hương", "Khánh", "Đăng Khoa", "Trương Khoa", "Linh", "Nhi", "Tấn Phát", "Tài", "Thanh", "Trân", "Anh Tuấn", "Thành Tuấn", "Thảo Vy", "Kiều Ánh", "Diệp Chi", "Cẩm Tú", "Duyên", "Đặng Hoàng", "Mai Hoàng", "Huyền", "Khải",
             "Phương Anh", "Võ Anh", "Hoài", "Hải Yến", "Dũng", "Đạt", "Ngọc", "Nhật", "Nhật Phát", "Tuấn Kiệt", "Hoàng Long", "Nhật Minh", "Anh Thư", "Quỳnh Hoa", "Ngọc Anh", "Gia Hân"
@@ -229,9 +257,9 @@
                 box.style.backgroundColor = randomColor;
                 box.innerText = name;
                 
-                const moveX = Math.floor(Math.random() * 20) - 10;
-                const moveY = Math.floor(Math.random() * 20) - 10;
-                const rotate = Math.floor(Math.random() * 20) - 10;
+                const moveX = Math.floor(Math.random() * 14) - 7;
+                const moveY = Math.floor(Math.random() * 14) - 7;
+                const rotate = Math.floor(Math.random() * 16) - 8;
                 box.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${rotate}deg)`;
                 
                 box.onclick = (e) => selectName(name, e, randomColor, randomShape);
@@ -253,14 +281,14 @@
             floatName.className = `selected-name-float ${shapeClass}`;
             floatName.style.backgroundColor = bgColor;
             floatName.innerText = name;
-            floatName.style.left = (e.clientX - 40) + 'px';
-            floatName.style.top = (e.clientY - 40) + 'px';
+            floatName.style.left = (e.clientX - 35) + 'px';
+            floatName.style.top = (e.clientY - 35) + 'px';
             document.body.appendChild(floatName);
 
             setTimeout(() => {
                 floatName.style.left = '50%';
                 floatName.style.top = '15px';
-                floatName.style.transform = 'translateX(-50%) scale(0.9)';
+                floatName.style.transform = 'translateX(-50%) scale(0.8)';
             }, 100);
 
             setTimeout(() => {
